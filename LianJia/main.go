@@ -48,9 +48,9 @@ func GetInfoInpage(doc *goquery.Document) []map[string]string{
 				continue
 			}
 	
-			r = regexp.MustCompile("(.*)平米")
+			r = regexp.MustCompile("(\\d+(\\.\\d+)?)平米")
 			matchs = r.FindStringSubmatch(rt)
-			if len(matchs) > 0{
+			if len(matchs) >= 2{
 				HouseInfo["面积"] = matchs[1]
 				continue
 			}
@@ -63,13 +63,13 @@ func GetInfoInpage(doc *goquery.Document) []map[string]string{
 			}
 		}
 		totalPrice := s.Find("div[class=\"totalPrice\"]").Text()
-		r := regexp.MustCompile("([0-9]+)万")
+		r := regexp.MustCompile("(\\d+(\\.\\d+)?)万")
 		matchs := r.FindStringSubmatch(totalPrice)
-		if len(matchs) == 2 {
+		if len(matchs) >= 2 {
 			HouseInfo["总价（万元）"] = matchs[1]
 		}
 		unitPrice := s.Find("div[class=\"unitPrice\"]").Text()
-		r = regexp.MustCompile("单价([0-9]+)元/平米")
+		r = regexp.MustCompile("单价(\\d+(\\.\\d+)?)元/平米")
 		matchs = r.FindStringSubmatch(unitPrice)
 		if len(matchs) == 2 {
 			HouseInfo["单价（元/平米）"] = matchs[1]
